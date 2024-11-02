@@ -4,6 +4,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { Select, SelectItem, SelectTrigger, SelectValue,  SelectContent} from "@/components/ui/select";
 import { SmtpMessage } from "../smtp-message";
 
 export default async function Signup(props: {
@@ -39,6 +40,19 @@ export default async function Signup(props: {
             minLength={6}
             required
           />
+          <Label htmlFor="user type"> User Type </Label>
+          <Select name="user type" required>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Roles" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="member">Member</SelectItem>
+              <SelectItem value="pledge">Pledge</SelectItem>
+
+            </SelectContent>
+          </Select>
+
+
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
           </SubmitButton>

@@ -8,31 +8,54 @@ import { redirect } from "next/navigation";
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
+  const userType = formData.get("user type")?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
-  if (!email || !password) {
-    return { error: "Email and password are required" };
+  if (!email || !password || !userType) {
+    return { error: "Email, password and user type are required" };
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback`,
+      data: { user_type: userType},
     },
   });
 
   if (error) {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
-  } else {
-    return encodedRedirect(
-      "success",
-      "/sign-up",
-      "Thanks for signing up! Please check your email for a verification link.",
-    );
   }
+
+  const { user } = data;
+  if (user) {
+    const { error: profileError } = await supabase
+      .from("user_profiles")
+      .insert([
+        {
+          user_id: user.id, // Reference the user ID
+          user_type: userType,
+        },
+      ]);
+
+    if (profileError) {
+      console.error(profileError.message);
+      return encodedRedirect(
+        "error",
+        "/sign-up",
+        "Failed to create user profile."
+      );
+    }
+  }
+
+  return encodedRedirect(
+    "success",
+    "/sign-up",
+    "Thanks for signing up! Please check your email for a verification link."
+  );
 };
 
 export const signInAction = async (formData: FormData) => {
