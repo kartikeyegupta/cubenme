@@ -30,8 +30,10 @@ export default async function Signup(props: {
           </Link>
         </p>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
-          <Label htmlFor="email">Email</Label>
-          <Input name="email" placeholder="you@example.com" required />
+          <Label htmlFor="name">Name</Label>
+          <Input name="name" placeholder="Nathan Shenkerman" required />
+          <Label htmlFor="email">Email (Use Duke Email)</Label>
+          <Input name="email" placeholder="firstname.lastname@duke.edu" required />
           <Label htmlFor="password">Password</Label>
           <Input
             type="password"
@@ -40,8 +42,8 @@ export default async function Signup(props: {
             minLength={6}
             required
           />
-          <Label htmlFor="user type"> User Type </Label>
-          <Select name="user type" required>
+          <Label htmlFor="user_type"> User Type </Label>
+          <Select name="user_type" required>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Roles" />
             </SelectTrigger>
