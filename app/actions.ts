@@ -9,8 +9,11 @@ export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const userType = formData.get("user_type")?.toString();
+  const gradYear = formData.get("grad_year");
+  const major = formData.get("major")?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
+  const name = formData.get("name")?.toString();
 
   if (!email || !password) {
     return { error: "Email, password and user type are required" };
@@ -34,7 +37,10 @@ export const signUpAction = async (formData: FormData) => {
     const { error: insertError } = await supabase.from('user_profiles').insert([
       {
         user_id: userId, // Assuming 'user_id' is the foreign key in user_profiles
+        name: name,
         user_type: userType,
+        major: major,
+        grad_year: gradYear
       }
     ]);
     
@@ -47,7 +53,7 @@ export const signUpAction = async (formData: FormData) => {
   return encodedRedirect(
     "success",
     "/sign-up",
-    "Thanks for signing up! Please check your email for a verification link."
+    "Welcome to CubeNME."
   );
 };
 
