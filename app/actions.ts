@@ -62,16 +62,41 @@ export const signInAction = async (formData: FormData) => {
   const password = formData.get("password") as string;
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data: session, error: signInError } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+  if (signInError) {
+    return encodedRedirect("error", "/sign-in", signInError.message);
+  }
+  const userId = session.user?.id;
+  if (!userId) {
+    return encodedRedirect("error", "/sign-in", "User ID not found in session.");
   }
 
-  return redirect("/protected");
+  const { data: userProfile, error: profileError } = await supabase
+    .from("user_profiles")
+    .select("user_type")
+    .eq("user_id", userId)
+    .single();
+
+  if (profileError || !userProfile?.user_type) {
+    return encodedRedirect(
+      "error",
+      "/sign-in",
+      profileError?.message || "Failed to fetch user profile."
+    );
+  }
+
+  // Redirect based on the user_type
+  if (userProfile.user_type === "pledge") {
+    return redirect("/protected/pledges");
+  } else if (userProfile.user_type === "member") {
+    return redirect("/protected/members");
+  } else {
+    return encodedRedirect("error", "/sign-in", "Unexpected user type.");
+  }
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
