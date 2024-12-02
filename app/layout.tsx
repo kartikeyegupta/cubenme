@@ -46,7 +46,7 @@ export default function RootLayout({
                       <Link href="https://www.thecube.llc/">Learn More </Link>
                     </Button>
                   </div>
-                  <div className="w-full sm:w-auto mt-3 sm:mt-0">
+                  <div className="w-full sm:w-auto mt-3 sm:mt-0 flex justify-center sm:justify-end">
                     {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                   </div>
                 </div>
