@@ -48,7 +48,7 @@ export default async function Signup(props: {
           <Label htmlFor="major">Major(s)</Label>
           <Input name="major" placeholder="ECE/CS" required />
 
-          <Label htmlFor="startup_int">Startup Interest</Label>
+          <Label htmlFor="startup_int">Startup Interest (s)</Label>
           <Input name="startup_int" placeholder="Gov Tech" required />
 
 
@@ -80,7 +80,6 @@ export default async function Signup(props: {
           <FormMessage message={searchParams} />
         </div>
       </form>
-      <SmtpMessage />
     </>
   );
 }
