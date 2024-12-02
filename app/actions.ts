@@ -14,6 +14,7 @@ export const signUpAction = async (formData: FormData) => {
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
   const name = formData.get("name")?.toString();
+  const startupInt = formData.get("startup_int")?.toString();
 
   if (!email || !password) {
     return { error: "Email, password and user type are required" };
@@ -23,7 +24,7 @@ export const signUpAction = async (formData: FormData) => {
     email,
     password,
     options: {
-      emailRedirectTo: `${origin}/auth/callback`,
+    emailRedirectTo: `${origin}/auth/callback`,
     },
   });
 
@@ -40,7 +41,8 @@ export const signUpAction = async (formData: FormData) => {
         name: name,
         user_type: userType,
         major: major,
-        grad_year: gradYear
+        grad_year: gradYear,
+        startup_interest: startupInt,
       }
     ]);
     

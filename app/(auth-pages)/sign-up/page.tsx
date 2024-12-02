@@ -70,6 +70,8 @@ export default async function Signup(props: {
               <SelectItem value="pledge">Pledge</SelectItem>
             </SelectContent>
           </CNSelect>
+          <Label htmlFor="startup_int">Startup Interest</Label>
+          <Input name="startup_int" placeholder="Gov Tech" required />
 
           <SubmitButton formAction={signUpAction} pendingText="Signing up...">
             Sign up
